@@ -1,0 +1,28 @@
+<div class='view-container sessions new'>
+    <main>
+        <header class='logo-wrapper'>
+          <img class="logo" src="/images/liveview-trello.svg" alt="Phoenix Framework Logo"/>
+        </header>
+        <%= f = form_for @changeset, "#",
+          id: "user-form",
+          phx_change: "validate",
+          phx_submit: "save" %>
+
+          <%= text_input f, :email, placeholder: "Email" %>
+          <%= error_tag f, :email %>
+
+          <%= text_input f, :password, type: "password", placeholder: "Password" %>
+          <%= error_tag f, :password %>
+
+          <%= if @error !== "" do %>
+            <span class="invalid-feedback"><%= @error %></span>
+          <% end %>
+          <%= submit "Sign In", phx_disable_with: "Sign In..." %>
+        </form>
+        <%=
+          live_patch "Create new account",
+          class: "redirection",
+          to: Routes.live_path(@socket, LiveviewTrelloWeb.SignUp)
+        %>
+    </main>
+</div>

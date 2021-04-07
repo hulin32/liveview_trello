@@ -17,7 +17,9 @@ defmodule LiveviewTrelloWeb.Router do
   scope "/", LiveviewTrelloWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", PageLive
+    live "/sign_in", SignIn
+    live "/sign_up", SignUp
   end
 
   # Other scopes may use custom stacks.

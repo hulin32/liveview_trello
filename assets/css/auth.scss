@@ -1,0 +1,57 @@
+.logo-wrapper {
+  text-align: center;
+}
+.logo {
+  text-align: center;
+  height: 62px;
+}
+
+.view-container {
+  main {
+    transform: translate(-50%, -50%);
+    position: fixed;
+    width: 450px;
+    top: 40%;
+    left: 50%;
+    text-align: center;
+  }
+  input {
+    background-color: white;
+    padding: 1em;
+    font-size: 1.1em;
+    line-height: 1.2em;
+    width: 350px;
+    height: 60px;
+  }
+  button {
+    width: 350px;
+    height: 60px;
+    border: 1px solid white;
+    background-color: $primary;
+    font-size: 16px;
+    font-weight: normal;
+    &:hover {
+      background-color: white;
+      color: $primary;
+    }
+  }
+
+  #user-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+  }
+
+  .redirection {
+    color: rgba(255, 255, 255, 0.5);
+    &:hover {
+      color: white;
+    }
+  }
+  .invalid-feedback {
+    margin-bottom: 0.5rem;
+    margin-top: -1.5rem;
+    animation: fadeIn 0.3s;
+  }
+}

@@ -1,5 +1,8 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
+@import "./variable.scss";
+@import "./animation.scss";
+@import "./auth.scss";
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
@@ -73,7 +76,7 @@
   border-color: #faebcc;
 }
 .alert-danger {
-  color: #a94442;
+  color: $error;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
@@ -84,7 +87,12 @@
   display: none;
 }
 .invalid-feedback {
-  color: #a94442;
+  color: $error;
   display: block;
   margin: -1rem 0 2rem;
+}
+
+body {
+  background: $primary;
+  min-height: 100vh;
 }

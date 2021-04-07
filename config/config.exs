@@ -29,3 +29,7 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :liveview_trello, LiveviewTrelloWeb.Guardian,
+       issuer: "liveview_trello",
+       secret_key: "qgGvNu0J5KEENRR+KOcoFZgoWUiHlnunlkioRTH4rDsu7UjbSfwEuxF5N+Uomis9"

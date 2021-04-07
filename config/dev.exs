@@ -11,12 +11,12 @@ config :liveview_trello, LiveviewTrello.Repo,
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
-#
+#s
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :liveview_trello, LiveviewTrelloWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT") || 9999],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
