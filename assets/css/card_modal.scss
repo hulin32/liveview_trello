@@ -1,0 +1,152 @@
+.card-modal-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(black, 0.4);
+  overflow-y: scroll;
+  animation-duration: .3s;
+  animation-name: fadeIn;
+  .card-modal {
+    pointer-events: none;
+    backface-visibility: hidden;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll; 
+  }
+  .card-content {
+    padding: 1.5em;
+    border-radius: 3px;
+    background-color: tint($gray, 50%);
+    position: absolute;
+    pointer-events: all;
+    width: 700px;
+    top: 6rem;
+    left: 50%;
+    margin-left: -350px;
+    animation-duration: .3s;
+    animation-name: fadeIn;
+    display: flex;
+  }
+  .close {
+    color: shade($gray,  20%);
+    padding: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    &:hover {
+      color: shade($gray,  50%);
+    }
+  }
+  h4, h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.1em;
+  }
+  h5 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.1em;
+    margin-bottom: 1rem;
+  }
+  .button, button {
+    background-color: $purple;
+    border: 0;
+    border-radius: $small-border-radius;
+    &:hover {
+      background-color: shade($purple, 10%);
+    }
+  }
+  .avatar-wrapper {
+    margin-right: 1rem;
+    height: 3rem;
+    width: 3rem;
+    background-color: $blue;
+    border-radius: $small-border-radius;
+    @include flex-center;
+  }
+  .info {
+    flex-grow: 1;
+    .card-tags {
+      margin-bottom: 2.4rem;
+    }
+    .tag {
+      display: inline-block;
+      height: 3rem;
+      width: 3rem;
+      margin-right: 5px;
+      border-radius: $small-border-radius;
+    }
+    p {
+      font-size: 1.6rem;
+      line-height: 2.4rem;
+      color: shade($gray, 50%);
+      margin-bottom: 1.5rem;
+    }
+  }
+  .comment-form-wrapper {
+    margin-top: 1.5rem;
+    .comment-form-inner {
+      display: flex;
+    }
+    .comment-area {
+      width: 100%;
+    }
+    .avatar-wrapper {
+      margin-right: 1rem;
+      height: 3rem;
+      width: 3rem;
+      background-color: $blue;
+      border-radius: $small-border-radius;
+      @include flex-center;
+    }
+    textarea {
+      background-color: white;
+      height: 10rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .comments-wrapper {
+    .comment {
+      display: flex;
+      margin-bottom: 2rem;
+    }
+    .info-wrapper {
+      width: 100%;
+    }
+    p {
+      padding: 0.5rem 1rem;
+      background-color: white;
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .options {
+    width: 15rem;
+    .button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      background-color: white;
+      color: shade($gray, 50%);
+      &:hover {
+        color: white;
+        background-color: $purple;
+      }
+      span {
+        margin-left: 1.5rem;
+        list-style: 1;
+      }
+    }
+  }
+}

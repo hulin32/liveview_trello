@@ -1,0 +1,55 @@
+<header class="main-header">
+  <nav id="boards_nav">
+    <ul>
+      <li>
+        <a phx-click="toggle_board"  href="#" phx-target="<%= @myself %>"><i class="fa fa-columns"></i>Boards</a>
+        <%= if @toggle_board do %>
+          <div class="dropdown">
+            <%= if length(@owned_boards_items) > 0 do %>
+              <header class="title"><i class="fa fa-user"></i> Owned boards</header>
+              <ul>
+                <%= for owned_boards_item <- @owned_boards_items do %>
+                  <li>
+                    <a href="#"><%= owned_boards_item.name %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <%= if length(@invited_boards_items) > 0 do %>
+              <header class="title"><i class="fa fa-user"></i> Other boards</header>
+              <ul>
+                <%= for invited_boards_item <- @invited_boards_items do %>
+                  <li>
+                    <a href="#"><%= invited_boards_item.name %></a>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+            <ul class="options">
+              <li>
+                <a to="/" >View all boards</a>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+
+  <%= live_redirect to: Routes.live_path(@socket, LiveviewTrelloWeb.Home), class: "logo-wrapper" do %>
+    <img class="logo" src="/images/liveview-trello.svg" alt="Phoenix Framework Logo"/>
+  <% end %>
+
+  <nav class="right">
+    <ul>
+      <li>
+        <a class="current-user">
+          LH
+        </a>
+      </li>
+      <li>
+        <a href="#"><i class="fa fa-sign-out-alt"></i> Sign out</a>
+      </li>
+    </ul>
+  </nav>
+</header>

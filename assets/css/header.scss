@@ -1,0 +1,104 @@
+.main-header {
+  background: $dark-purple;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .logo-wrapper {
+    display: flex;
+  }
+  .logo {
+    height: 32px;
+  }
+  ul {
+    display: flex;
+    margin-bottom: 0;
+    align-items: center;
+  }
+  .fa-columns {
+    margin-right: 5px;
+  }
+  li {
+    position: relative;
+    margin: 0;
+    .dropdown {
+      position: absolute;
+      display: block;
+      z-index: 99;
+      background: white;
+      border-radius: $small-border-radius;;
+      left: 0;
+      margin-top: 0.5rem;
+      color: shade($gray, 25%);
+      width: 24rem;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 3px 6px rgba(black, 40%);
+      animation-duration: .3s;
+      animation-name: fadeIn;
+      .title {
+        padding: 1rem .5rem;
+        color: shade($gray, 20%);
+      }
+      ul {
+        display: block;
+        position: relative;
+        overflow-y: auto;
+        margin: 0;
+        li {
+          height: 3.5rem;
+          margin: 5px 0;
+        }
+      }
+      a {
+        transition: all 0.15s ease-out 0s;
+        color: shade($gray, 50%);
+        font-weight: bold;
+        @include flex-v-center;
+        padding: .7rem .5rem;
+        height: 100%;
+        background: tint($purple, 80%);
+        &:hover {
+          background-color: tint($purple, 40%);
+          color: inherit;
+        }
+      }
+      .options a {
+        background: white;
+        text-decoration: underline;
+        font-weight: normal;
+        color: shade($gray, 25%);
+        margin-top: 10px;
+        &:hover {
+          background-color: #dee1e3;
+        }
+      }
+    }
+  }
+  nav ul li a {
+    transition: all 0.15s ease-out 0s;
+    color: rgba(white, 0.5);
+    background: rgba(white, 0.15);
+    border-radius: $small-border-radius;;
+    padding: 5px 8px;
+    line-height: 1rem;
+    cursor: pointer;
+    &:hover {
+      color: white;
+    }
+  }
+  .current-user {
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    padding: 5px;
+    margin-right: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    background-color: $blue;
+    color: black;
+    line-height: 32px;
+    &:hover {
+      color: black;
+    }
+  }
+}

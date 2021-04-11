@@ -1,3 +1,59 @@
 // colors
 $primary: #89609E;
+$dark-purple: #745286;
 $error: #e74c3c;
+$blue: #3498db;
+$green: #2ecc71;
+$red: #e74c3c;
+$yellow: #f1c40f;
+$orange: #e67e22;
+$purple: #89609E;
+$gray: #bdc3c7;
+$asphalt: #34495e;
+$pink: #ff5aec;
+
+$tags-colors: (green: #61bd4f, yellow: #f2d600, orange: #ffab4a, red: #eb5a46, purple: #c377e0, blue: #0079bf);
+$small-border-radius: 3px;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-v-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-h-center {
+  display: flex;
+  justify-content: center;
+}
+
+/// Slightly lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// @access public
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@each $key, $color in $tags-colors {
+  .tag.#{$key} {
+    background: $color;
+    &:hover, &.selected {
+      background: shade($color, 20%);
+    }
+  }
+}

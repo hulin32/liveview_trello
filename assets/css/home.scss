@@ -1,0 +1,232 @@
+.main-container {
+  height: calc(100vh - 5rem);
+}
+@mixin new-cta {
+  button {
+    width: 6rem;
+    padding: 0;
+    height: 4rem;
+    text-align: center;
+    background-color: tint($gray, 20%);
+    color: shade($gray, 60%);
+    border: 1px solid shade($gray, 10%);
+    cursor: pointer;
+  }
+  span {
+    color: shade($gray, 60%);
+  }
+  a {
+    cursor: pointer;
+    color: $blue;
+    &:hover {
+      color: shade($blue, 30%);
+    }
+  }
+}
+
+.boards {
+  height: calc(100% - 3rem);
+  .view-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .board-name {
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+    @include flex-center;
+  }
+  .board-users {
+    display: flex;
+    margin: 0;
+  }
+  .name {
+    height: 30px;
+    padding: 0 5px;
+    border-radius: $small-border-radius;
+    background-color: $blue;
+    @include flex-center;
+    margin: 0 5px;
+    &.icon {
+      background-color: transparent;
+      border: 1px solid rgba(white, 0.5);
+      height: 30px;
+      width: 30px;
+    }
+    .add-new {
+      color: tint($gray, 10%);
+    }
+  }
+  .lists-wrapper {
+    max-height: calc(100% - 3rem);
+    display: flex;
+    overflow-x: auto;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .list {
+    max-height: calc(100% - 3rem);
+    flex: 0 0 28rem;
+    margin-right: 10px;
+    border-radius: $small-border-radius;
+    color: $gray;
+    .inner {
+      border-radius: $small-border-radius;
+      padding: 1rem;
+      background-color: tint($gray, 50%);
+      cursor: pointer;
+    }
+    .title {
+      color: shade($gray, 80%);
+      font-size: 1.4rem;
+      line-height: 20px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .add-new {
+      color: shade($gray, 50%);
+      cursor: pointer;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      padding-right: 20px;
+      position: relative;
+      .fa-pencil-alt {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+    .tag {
+      display: block;
+      width: 40px;
+      border-radius: $small-border-radius;
+      height: 10px;
+      margin-right: 3px;
+      margin-bottom: 3px;
+    }
+    .card {
+      background-color: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: $small-border-radius;
+      cursor: pointer;
+      p {
+        color: shade($gray, 60%);
+        margin-bottom: 0;
+        line-height: 1;
+      }
+      .comment {
+        color: shade($gray, 20%);
+        font-size: 1.3rem;
+        margin-top: 5px;
+      }
+      &:hover {
+        .fa-pencil-alt {
+          display: block;
+        }
+      }
+    }
+  }
+  .list-name, .member-name {
+    border: 0;
+    padding: 1.2rem;
+    height: initial;
+    font-size: 1.6rem;
+    border-radius: $small-border-radius;
+    outline: 0;
+    width: 100%;
+    &:focus {
+      box-shadow: inset 0 0 0 2px $blue;
+    }
+  }
+  .list-new-form, .card-new-form {
+    margin: 0;
+  }
+  .list-new-cta {
+    @include new-cta;
+    button {
+      width: 12rem;
+    }
+  }
+  .card-name {
+    background-color: white;
+  }
+  .card-new-cta {
+    button {
+      width: 6rem;
+      padding: 0;
+      height: 4rem;
+      text-align: center;
+      background-color: tint($gray, 20%);
+      color: shade($gray, 60%);
+      border: 1px solid shade($gray, 10%);
+      cursor: pointer;
+    }
+    span {
+      color: shade($gray, 60%);
+    }
+    a {
+      cursor: pointer;
+      color: $blue;
+      &:hover {
+        color: shade($blue, 30%);
+      }
+    }
+  }
+  .list-new {
+    .inner {
+      padding: 1rem;
+      border-radius: $small-border-radius;
+      background-color: rgba(black, 0.1);
+      &:hover {
+        background-color: rgba(black, 0.2);
+      }
+    }
+  }
+  .list-item {
+    cursor: pointer;
+  }
+}
+.member-cta {
+  position: relative;
+  .drop-down {
+    position: absolute;
+    top: 3.5rem;
+    right: 0;
+    border-radius: $small-border-radius;
+    padding: 1rem;
+    background-color: tint($gray, 50%);
+    cursor: pointer;
+    width: 30rem;
+  }
+  .title {
+    color: shade($gray, 80%);
+    font-size: 1.4rem;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  form {
+    margin: 0;
+  }
+  .member-form {
+    @include new-cta;
+    button {
+      width: 15rem;
+    }
+  }
+}
+

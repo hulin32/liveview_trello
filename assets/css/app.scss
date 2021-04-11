@@ -2,6 +2,9 @@
 @import "./phoenix.css";
 @import "./variable.scss";
 @import "./animation.scss";
+@import "./header.scss";
+@import "./card_modal.scss";
+@import "./home.scss";
 @import "./auth.scss";
 
 /* LiveView specific classes for your customizations */
@@ -92,7 +95,23 @@
   margin: -1rem 0 2rem;
 }
 
+.view-container {
+  padding: 0 1.5rem;
+}
+html {
+  font-size: 62.5%;
+}
 body {
   background: $primary;
   min-height: 100vh;
+  font-size: 1.6rem;
+  color: #4c4e50;
+}
+
+
+li {
+  list-style: none;
+}
+body {
+  margin: 0;
 }
