@@ -26,9 +26,9 @@
           <%= submit "Sign Up", disabled: !@changeset.valid?, phx_disable_with: "Sign Up..." %>
         </form>
         <%=
-          live_patch "Sign In",
+          link "Sign In",
           class: "redirection",
-          to: Routes.live_path(@socket, LiveviewTrelloWeb.SignIn)
+          to: "/sign_in"
         %>
       </main>
 </div>

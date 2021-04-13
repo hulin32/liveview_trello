@@ -2,6 +2,7 @@
   live_component @socket,
   LiveviewTrelloWeb.HeaderComponent,
   id: :header,
+  current_user: @current_user,
   owned_boards_items:  [%{id: 1, name: "name"}, %{id: 2, name: "nameddd"}],
   invited_boards_items:  [%{id: 1, name: "name2"}]
 %>

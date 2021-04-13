@@ -44,11 +44,11 @@
     <ul>
       <li>
         <a class="current-user">
-          LH
+          <%= String.first(@current_user.last_name)<>String.first(@current_user.first_name) %>
         </a>
       </li>
       <li>
-        <a href="#"><i class="fa fa-sign-out-alt"></i> Sign out</a>
+        <a href="/logout"><i class="fa fa-sign-out-alt"></i> Sign out</a>
       </li>
     </ul>
   </nav>

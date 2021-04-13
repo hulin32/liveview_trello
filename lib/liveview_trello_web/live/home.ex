@@ -1,8 +1,16 @@
 defmodule LiveviewTrelloWeb.Home do
   use LiveviewTrelloWeb, :live_view
+  alias LiveviewTrello.Accounts.Guardian
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, %{ "guardian_default_token" => token }, socket) do
+    socket =
+    case Guardian.resource_from_token(token) do
+      {:ok, user, _claims} ->
+        socket
+        |> assign(:current_user, user)
+      _ -> socket
+    end
     {:ok,
       socket
       |> assign(show_new_list: false)

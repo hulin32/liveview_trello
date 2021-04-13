@@ -30,6 +30,6 @@ config :phoenix, :json_library, Jason
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
 
-config :liveview_trello, LiveviewTrelloWeb.Guardian,
+config :liveview_trello, LiveviewTrello.Accounts.Guardian,
        issuer: "liveview_trello",
        secret_key: "qgGvNu0J5KEENRR+KOcoFZgoWUiHlnunlkioRTH4rDsu7UjbSfwEuxF5N+Uomis9"

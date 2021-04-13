@@ -1,4 +1,4 @@
-defmodule LiveviewTrello.Guardian do
+defmodule LiveviewTrello.Accounts.Guardian do
   use Guardian, otp_app: :liveview_trello
 
   def subject_for_token(resource, _claims) do

@@ -1,6 +1,18 @@
 defmodule LiveviewTrelloWeb.Router do
   use LiveviewTrelloWeb, :router
 
+  pipeline :auth do
+    plug LiveviewTrello.Accounts.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
+  pipeline :redirect_check do
+    plug LiveviewTrelloWeb.Plugs.Redirector
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -15,11 +27,16 @@ defmodule LiveviewTrelloWeb.Router do
   end
 
   scope "/", LiveviewTrelloWeb do
-    pipe_through :browser
-
-    live "/", Home
-    live "/sign_in", SignIn
+    pipe_through [:browser, :auth, :redirect_check]
+    get "/sign_in", AuthController, :index
+    post "/sign_in", AuthController, :login
     live "/sign_up", SignUp
+  end
+
+  scope "/", LiveviewTrelloWeb do
+    pipe_through [:browser, :auth, :ensure_auth]
+    get "/logout", AuthController, :logout
+    live "/", Home
   end
 
   # Other scopes may use custom stacks.

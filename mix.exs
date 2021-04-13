@@ -48,6 +48,7 @@ defmodule LiveviewTrello.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 2.0"},
+      {:guardian_phoenix, git: "https://github.com/erikhu/guardian_phoenix.git"},
       {:pbkdf2_elixir, "~> 1.3"},
     ]
   end

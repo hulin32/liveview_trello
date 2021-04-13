@@ -2,6 +2,7 @@ defmodule LiveviewTrello.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :password, :password_confirmation, :email, :first_name, :last_name, :crypted_password]}
   schema "users" do
     field :crypted_password, :string
     field :password, :string, virtual: true
