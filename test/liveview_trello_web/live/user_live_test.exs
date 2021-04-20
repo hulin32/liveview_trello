@@ -5,9 +5,9 @@ defmodule LiveviewTrelloWeb.UserLiveTest do
 
   alias LiveviewTrello.Accounts
 
-  @create_attrs %{crypted_password: "some crypted_password", email: "some email", first_name: "some first_name", last_name: "some last_name"}
-  @update_attrs %{crypted_password: "some updated crypted_password", email: "some updated email", first_name: "some updated first_name", last_name: "some updated last_name"}
-  @invalid_attrs %{crypted_password: nil, email: nil, first_name: nil, last_name: nil}
+  @create_attrs %{encrypted_password: "some encrypted_password", email: "some email", first_name: "some first_name", last_name: "some last_name"}
+  @update_attrs %{encrypted_password: "some updated encrypted_password", email: "some updated email", first_name: "some updated first_name", last_name: "some updated last_name"}
+  @invalid_attrs %{encrypted_password: nil, email: nil, first_name: nil, last_name: nil}
 
   defp fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -26,7 +26,7 @@ defmodule LiveviewTrelloWeb.UserLiveTest do
       {:ok, _index_live, html} = live(conn, Routes.user_index_path(conn, :index))
 
       assert html =~ "Listing Users"
-      assert html =~ user.crypted_password
+      assert html =~ user.encrypted_password
     end
 
     test "saves new user", %{conn: conn} do
@@ -48,7 +48,7 @@ defmodule LiveviewTrelloWeb.UserLiveTest do
         |> follow_redirect(conn, Routes.user_index_path(conn, :index))
 
       assert html =~ "User created successfully"
-      assert html =~ "some crypted_password"
+      assert html =~ "some encrypted_password"
     end
 
     test "updates user in listing", %{conn: conn, user: user} do
@@ -70,7 +70,7 @@ defmodule LiveviewTrelloWeb.UserLiveTest do
         |> follow_redirect(conn, Routes.user_index_path(conn, :index))
 
       assert html =~ "User updated successfully"
-      assert html =~ "some updated crypted_password"
+      assert html =~ "some updated encrypted_password"
     end
 
     test "deletes user in listing", %{conn: conn, user: user} do

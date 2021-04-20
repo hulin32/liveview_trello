@@ -113,7 +113,7 @@ defmodule LiveviewTrello.Accounts do
   def authenticate_by_username_and_pass(email, given_pass) do
     user = get_user_by(email: email)
     cond do
-      user && Pbkdf2.verify_pass(given_pass, user.crypted_password) ->
+      user && Pbkdf2.verify_pass(given_pass, user.encrypted_password) ->
         {:ok, user}
 
       user ->

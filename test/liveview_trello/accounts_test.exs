@@ -6,9 +6,9 @@ defmodule LiveviewTrello.AccountsTest do
   describe "users" do
     alias LiveviewTrello.Accounts.User
 
-    @valid_attrs %{crypted_password: "some crypted_password", email: "some email", first_name: "some first_name", last_name: "some last_name"}
-    @update_attrs %{crypted_password: "some updated crypted_password", email: "some updated email", first_name: "some updated first_name", last_name: "some updated last_name"}
-    @invalid_attrs %{crypted_password: nil, email: nil, first_name: nil, last_name: nil}
+    @valid_attrs %{encrypted_password: "some encrypted_password", email: "some email", first_name: "some first_name", last_name: "some last_name"}
+    @update_attrs %{encrypted_password: "some updated encrypted_password", email: "some updated email", first_name: "some updated first_name", last_name: "some updated last_name"}
+    @invalid_attrs %{encrypted_password: nil, email: nil, first_name: nil, last_name: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -31,7 +31,7 @@ defmodule LiveviewTrello.AccountsTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.crypted_password == "some crypted_password"
+      assert user.encrypted_password == "some encrypted_password"
       assert user.email == "some email"
       assert user.first_name == "some first_name"
       assert user.last_name == "some last_name"
@@ -44,7 +44,7 @@ defmodule LiveviewTrello.AccountsTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
-      assert user.crypted_password == "some updated crypted_password"
+      assert user.encrypted_password == "some updated encrypted_password"
       assert user.email == "some updated email"
       assert user.first_name == "some updated first_name"
       assert user.last_name == "some updated last_name"

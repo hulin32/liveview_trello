@@ -2,14 +2,20 @@ defmodule LiveviewTrello.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:id, :password, :password_confirmation, :email, :first_name, :last_name, :crypted_password]}
+  alias LiveviewTrello.{Board, UserBoard}
+
+  @derive {Jason.Encoder, only: [:id, :password, :password_confirmation, :email, :first_name, :last_name, :encrypted_password]}
   schema "users" do
-    field :crypted_password, :string
+    field :encrypted_password, :string
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
     field :email, :string
     field :first_name, :string
     field :last_name, :string
+
+    has_many :owned_boards, Board
+    has_many :user_board, UserBoard
+    has_many :boards, through: [:user_board, :board]
 
     timestamps()
   end
@@ -37,7 +43,7 @@ defmodule LiveviewTrello.Accounts.User do
   defp put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
-        put_change(changeset, :crypted_password, Pbkdf2.hash_pwd_salt(pass))
+        put_change(changeset, :encrypted_password, Pbkdf2.hash_pwd_salt(pass))
       _ ->
         changeset
     end
