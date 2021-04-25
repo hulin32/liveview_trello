@@ -30,7 +30,7 @@ defmodule LiveviewTrello.Board do
     where: b.user_id != ^user_id
   end
 
-  def preload_all(query) do
+  def preload_board_all(query) do
     comments_query = from c in Comment, order_by: [desc: c.inserted_at], preload: :user
     cards_query = from c in Card, order_by: c.position, preload: [[comments: ^comments_query]]
     lists_query = from l in List, order_by: l.position, preload: [cards: ^cards_query]

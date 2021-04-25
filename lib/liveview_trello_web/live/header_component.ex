@@ -15,7 +15,6 @@ defmodule LiveviewTrelloWeb.HeaderComponent do
   @impl true
   def handle_event("toggle_board", _, socket) do
     socket = socket |> assign(:toggle_board, !socket.assigns.toggle_board);
-    IO.inspect socket
     {:noreply, socket}
   end
 

@@ -1,57 +1,77 @@
 defmodule LiveviewTrelloWeb.Board do
   use LiveviewTrelloWeb, :live_view
   import Ecto
+  import Ecto.Query
   alias LiveviewTrello.Accounts.Guardian
   alias LiveviewTrello.{Repo, Board, UserBoard, Card}
 
   @impl true
-  def mount(_params, %{ "guardian_default_token" => token }, socket) do
+  def mount(%{ "id" => id }, %{ "guardian_default_token" => token }, socket) do
+    {board_id, _} =
+      id
+      |> String.split("-")
+      |> Enum.at(0)
+      |> Integer.parse()
+
+    current_board = Board
+      |> where(id: ^board_id)
+      |> Board.preload_board_all
+      |> Repo.one()
+
     socket =
-    case Guardian.resource_from_token(token) do
-      {:ok, user, _claims} ->
+      case Guardian.resource_from_token(token) do
+        {:ok, user, _claims} ->
+          socket
+          |> assign(:current_user, user)
+        _ -> socket
+      end
+    if current_board === nil or socket.assigns.current_user.id !== current_board.user.id do
+      {:ok,
         socket
-        |> assign(:current_user, user)
-      _ -> socket
+          |> reset_all_toggle()
+          |> load_boards()
+          |> assign(:error, "No related board found")
+      }
+    else
+      {:ok,
+        socket
+        |> reset_all_toggle()
+        |> load_boards()
+        |> assign(:current_board, current_board)
+      }
     end
-
-    owned_boards = socket.assigns.current_user
-      |> assoc(:owned_boards)
-      |> Board.preload_all
-      |> Repo.all
-
-    invited_boards = socket.assigns.current_user
-      |> assoc(:boards)
-      |> Board.not_owned_by(socket.assigns.current_user.id)
-      |> Board.preload_all
-      |> Repo.all
-
-
-    {:ok,
-      socket
-      |> assign(show_new_list: false)
-      |> assign(show_new_card: %{})
-      |> assign(show_new_memeber: false)
-      |> assign(show_card_modal: false)
-    }
   end
 
   @impl true
-  def handle_event("new_list_toggle", _, socket) do
+  def handle_event("new_list_toggle", _params, socket) do
     show_new_list = !socket.assigns.show_new_list
     {:noreply,
       socket
-      |> reset_all_toggle
+      |> reset_all_toggle()
       |> assign(show_new_list: show_new_list)
     }
   end
 
   @impl true
-  def handle_event("save_new_list", params, socket) do
-    # %{"list" => %{"name" => "sassasas"}}
-    IO.inspect params
+  def handle_event("save_new_list", %{"list" => params}, socket) do
+    changeset = socket.assigns.current_board
+      |> build_assoc(:lists)
+      |> LiveviewTrello.List.changeset(params)
+
+    if changeset.valid? do
+      Repo.insert!(changeset)
+    end
+
+    current_board = Board
+      |> where(id: ^socket.assigns.current_board.id)
+      |> Board.preload_board_all
+      |> Repo.one()
+
     {:noreply,
       socket
-      |> reset_all_toggle
+      |> reset_all_toggle()
+      |> load_boards()
+      |> assign(:current_board, current_board)
     }
   end
 
@@ -72,7 +92,6 @@ defmodule LiveviewTrelloWeb.Board do
   @impl true
   def handle_event("save_new_card", params, socket) do
     # %{"card" => %{"name" => "sasasa"}, "list" => %{"id" => "2"}}
-    IO.inspect params
     {:noreply,
       socket
       |> reset_all_toggle
@@ -110,8 +129,24 @@ defmodule LiveviewTrelloWeb.Board do
     }
   end
 
+  defp load_boards(socket) do
+    owned_boards = socket.assigns.current_user
+      |> assoc(:owned_boards)
+      |> Repo.all
+
+    invited_boards = socket.assigns.current_user
+      |> assoc(:boards)
+      |> Board.not_owned_by(socket.assigns.current_user.id)
+      |> Repo.all
+
+    socket
+    |> assign(owned_boards: owned_boards)
+    |> assign(invited_boards: invited_boards)
+  end
+
   defp reset_all_toggle(socket) do
     socket
+    |> assign(error: "")
     |> assign(show_new_list: false)
     |> assign(show_new_card: %{})
     |> assign(show_new_memeber: false)

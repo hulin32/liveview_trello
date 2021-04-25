@@ -3,8 +3,8 @@
   LiveviewTrelloWeb.HeaderComponent,
   id: :header,
   current_user: @current_user,
-  owned_boards_items:  [%{id: 1, name: "name"}, %{id: 2, name: "nameddd"}],
-  invited_boards_items:  [%{id: 1, name: "name2"}]
+  owned_boards_items:  @owned_boards,
+  invited_boards_items:  @invited_boards
 %>
 
 <%= if @show_card_modal do %>
@@ -51,94 +51,60 @@
       </ul>
     </header>
     <div class="lists-wrapper">
-      <div class="list">
-        <div class="inner">
-          <header>
-            <h4 class="title">list2</h4>
-          </header>
-          <section>
-            <div phx-click="card_modal_toggle" phx-value-card_id="1"  class="card">
-              <div class="tags">
-                <span class="tag green"></span>
-                <span class="tag yellow"></span>
-                <span class="tag orange"></span>
-                <i class="fas fa-pencil-alt"></i>
-              </div>
-              <p>
-                sa s aas as asa sasa ss asa s sasa sa
-              </p>
-              <div class="comment">
-                <i class="fa fa-comment"></i>
-                2
-              </div>
-            </div>
-            <div phx-click="card_modal_toggle" phx-value-card_id="3"  class="card">
-              <div class="tags">
-                <span class="tag green"></span>
-                <span class="tag yellow"></span>
-                <span class="tag orange"></span>
-                <i class="fas fa-pencil-alt"></i>
-              </div>
-              <p>
-                sa s aas as asa sasa ss asa s sasa sa
-              </p>
-            </div>
-          </section>
-          <footer>
-            <%= if Map.get(@show_new_card, "1") do %>
-              <form phx-submit="save_new_card" class="card-new-form">
-                <%=
-                  textarea :card, :name,
-                  class: "card-name",
-                  required: true
-                %>
-                <%=
-                  text_input :list, :id,
-                  hidden: true,
-                  value: "1"
-                %>
-                <div class="card-new-cta">
-                  <button type="submit" >Add</button>
-                  <span>or</span>
-                  <a phx-click="new_card_toggle" phx-value-card_id="1">cancel</a>
+      <%= if @error do %>
+        <div><%= @error %></div>
+      <% end %>
+    </div>
+    <div class="lists-wrapper">
+      <%= for list <- @current_board.lists do %>
+        <div class="list">
+          <div class="inner">
+            <header>
+              <h4 class="title"><%= list.name %></h4>
+            </header>
+            <section>
+              <div phx-click="card_modal_toggle" phx-value-card_id="1"  class="card">
+                <div class="tags">
+                  <span class="tag green"></span>
+                  <span class="tag yellow"></span>
+                  <span class="tag orange"></span>
+                  <i class="fas fa-pencil-alt"></i>
                 </div>
-              </form>
-            <% else %>
-            <div phx-click="new_card_toggle" phx-value-card_id="1" class="add-new">Add a new card...</div>
-            <% end %>
-          </footer>
-        </div>
-      </div>
-      <div class="list">
-        <div class="inner">
-          <header>
-            <h4 class="title">list5</h4>
-          </header>
-          <footer>
-            <%= if Map.get(@show_new_card, "2") do %>
-              <form phx-value-card_id="2" phx-submit="save_new_card" class="card-new-form">
-                <%=
-                  textarea :card, :name,
-                  class: "card-name",
-                  required: true
-                %>
-                <%=
-                  text_input :list, :id,
-                  hidden: true,
-                  value: "2"
-                %>
-                <div class="card-new-cta">
-                  <button type="submit" >Add</button>
-                  <span>or</span>
-                  <a phx-click="new_card_toggle" phx-value-card_id="2">cancel</a>
+                <p>
+                  sa s aas as asa sasa ss asa s sasa sa
+                </p>
+                <div class="comment">
+                  <i class="fa fa-comment"></i>
+                  2
                 </div>
-              </form>
-            <% else %>
-            <div phx-click="new_card_toggle" phx-value-card_id="2" class="add-new">Add a new card...</div>
-            <% end %>
-          </footer>
+              </div>
+            </section>
+            <footer>
+              <%= if Map.get(@show_new_card, "1") do %>
+                <form phx-submit="save_new_card" class="card-new-form">
+                  <%=
+                    textarea :card, :name,
+                    class: "card-name",
+                    required: true
+                  %>
+                  <%=
+                    text_input :list, :id,
+                    hidden: true,
+                    value: list.id
+                  %>
+                  <div class="card-new-cta">
+                    <button type="submit" >Add</button>
+                    <span>or</span>
+                    <a phx-click="new_card_toggle" phx-value-card_id="1">cancel</a>
+                  </div>
+                </form>
+              <% else %>
+              <div phx-click="new_card_toggle" phx-value-card_id="1" class="add-new">Add a new card...</div>
+              <% end %>
+            </footer>
+          </div>
         </div>
-      </div>
+      <% end %>
       <div class="list <%= if !@show_new_list, do: 'list-new' %>">
         <div class="inner">
         <%= if @show_new_list do %>

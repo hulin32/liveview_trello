@@ -55,13 +55,11 @@ defmodule LiveviewTrelloWeb.Home do
   defp load_boards(socket) do
     owned_boards = socket.assigns.current_user
       |> assoc(:owned_boards)
-      |> Board.preload_all
       |> Repo.all
 
     invited_boards = socket.assigns.current_user
       |> assoc(:boards)
       |> Board.not_owned_by(socket.assigns.current_user.id)
-      |> Board.preload_all
       |> Repo.all
 
     socket
