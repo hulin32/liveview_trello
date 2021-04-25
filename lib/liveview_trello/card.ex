@@ -7,7 +7,7 @@ defmodule LiveviewTrello.Card do
   schema "cards" do
     field :desc, :string
     field :name, :string
-    field :order, :integer
+    field :position, :integer
     field :tags, :string
 
     belongs_to :list, List
@@ -21,7 +21,7 @@ defmodule LiveviewTrello.Card do
   @doc false
   def changeset(card, attrs) do
     card
-    |> cast(attrs, [:name, :list_id, :desc, :order, :tags])
-    |> validate_required([:name, :list_id, :desc, :order, :tags])
+    |> cast(attrs, [:name, :list_id, :desc, :position, :tags])
+    |> validate_required([:name, :list_id, :desc, :position, :tags])
   end
 end

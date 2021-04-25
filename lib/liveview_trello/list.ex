@@ -6,6 +6,7 @@ defmodule LiveviewTrello.List do
 
   schema "lists" do
     field :name, :string
+    field :position, :integer, default: 0
 
     belongs_to :board, Board
     has_many :cards, Card

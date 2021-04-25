@@ -37,6 +37,7 @@ defmodule LiveviewTrelloWeb.Router do
     pipe_through [:browser, :auth, :ensure_auth]
     get "/logout", AuthController, :logout
     live "/", Home
+    live "/boards/:id", Board, as: :show
   end
 
   # Other scopes may use custom stacks.

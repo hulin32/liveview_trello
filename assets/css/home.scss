@@ -29,7 +29,7 @@
   .view-header {
     display: flex;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     margin-bottom: 1rem;
   }
   .board-name {
@@ -70,6 +70,12 @@
     /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {
       display: none;
+    }
+  }
+  .board-list {
+    flex-wrap: wrap;
+    .list {
+      margin-bottom: 1rem;
     }
   }
   .list {

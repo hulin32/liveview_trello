@@ -3,8 +3,8 @@
   LiveviewTrelloWeb.HeaderComponent,
   id: :header,
   current_user: @current_user,
-  owned_boards_items:  [%{id: 1, name: "name"}, %{id: 2, name: "nameddd"}],
-  invited_boards_items:  [%{id: 1, name: "name2"}]
+  owned_boards_items:  @owned_boards,
+  invited_boards_items:  @invited_boards
 %>
 
 <%= if @show_card_modal do %>
@@ -15,151 +15,73 @@
   %>
 <% end %>
 
-<div class="main-container" id="home">
+<div id="board">
   <div class="view-container boards show">
     <header class="view-header">
-      <h3 class="board-name">hulin</h3>
-      <ul class="board-users">
-        <li class="name connected">
-          LH
-        </li>
-        <li class="name">
-          UJ
-        </li>
-        <li class="name icon member-cta">
-          <a phx-click="new_member_toggle" class="add-new" href="#" ><i class="fa fa-plus" ></i></a>
-          <%= if @show_new_memeber do %>
-            <div class="drop-down">
-              <form phx-submit="save_new_member">
-                <h4 class="title">Add new members</h4>
-                <%=
-                  text_input :member, :email,
-                  class: "member-name",
-                  type: "email",
-                  required: true,
-                  placeholder: "Member email"
-                %>
-                <div class="member-form">
-                  <button phx-disable-with="Add member..." type="submit">Add member</button>
-                  <span>or</span>
-                  <a phx-click="new_member_toggle" href="#">cancel</a>
-                </div>
-              </form>
-            </div>
-          <% end %>
-        </li>
-      </ul>
+      <div class="board-title">
+        <i class="fa fa-user"></i>
+        <h3 class="board-name">My boards</h3>
+      </div>
     </header>
-    <div class="lists-wrapper">
-      <div class="list">
-        <div class="inner">
-          <header>
-            <h4 class="title">list2</h4>
-          </header>
-          <section>
-            <div phx-click="card_modal_toggle" phx-value-card_id="1"  class="card">
-              <div class="tags">
-                <span class="tag green"></span>
-                <span class="tag yellow"></span>
-                <span class="tag orange"></span>
-                <i class="fas fa-pencil-alt"></i>
-              </div>
-              <p>
-                sa s aas as asa sasa ss asa s sasa sa
-              </p>
-              <div class="comment">
-                <i class="fa fa-comment"></i>
-                2
-              </div>
-            </div>
-            <div phx-click="card_modal_toggle" phx-value-card_id="3"  class="card">
-              <div class="tags">
-                <span class="tag green"></span>
-                <span class="tag yellow"></span>
-                <span class="tag orange"></span>
-                <i class="fas fa-pencil-alt"></i>
-              </div>
-              <p>
-                sa s aas as asa sasa ss asa s sasa sa
-              </p>
-            </div>
-          </section>
-          <footer>
-            <%= if Map.get(@show_new_card, "1") do %>
-              <form phx-submit="save_new_card" class="card-new-form">
-                <%=
-                  textarea :card, :name,
-                  class: "card-name",
-                  required: true
-                %>
-                <%=
-                  text_input :list, :id,
-                  hidden: true,
-                  value: "1"
-                %>
-                <div class="card-new-cta">
-                  <button type="submit" >Add</button>
-                  <span>or</span>
-                  <a phx-click="new_card_toggle" phx-value-card_id="1">cancel</a>
-                </div>
-              </form>
-            <% else %>
-            <div phx-click="new_card_toggle" phx-value-card_id="1" class="add-new">Add a new card...</div>
-            <% end %>
-          </footer>
+    <div class="lists-wrapper board-list">
+      <%= for owned_boards_item <- @owned_boards do %>
+        <div class="list">
+          <%=
+            live_patch to: Routes.show_path(
+                @socket,
+                LiveviewTrelloWeb.Board,
+                LiveviewTrello.Board.slug_id(owned_boards_item)
+              ),
+            class: "inner" do %>
+            <header>
+              <h5 class="title"><%= owned_boards_item.name %></h5>
+            </header>
+          <% end %>
         </div>
-      </div>
-      <div class="list">
-        <div class="inner">
-          <header>
-            <h4 class="title">list5</h4>
-          </header>
-          <footer>
-            <%= if Map.get(@show_new_card, "2") do %>
-              <form phx-value-card_id="2" phx-submit="save_new_card" class="card-new-form">
-                <%=
-                  textarea :card, :name,
-                  class: "card-name",
-                  required: true
-                %>
-                <%=
-                  text_input :list, :id,
-                  hidden: true,
-                  value: "2"
-                %>
-                <div class="card-new-cta">
-                  <button type="submit" >Add</button>
-                  <span>or</span>
-                  <a phx-click="new_card_toggle" phx-value-card_id="2">cancel</a>
-                </div>
-              </form>
-            <% else %>
-            <div phx-click="new_card_toggle" phx-value-card_id="2" class="add-new">Add a new card...</div>
-            <% end %>
-          </footer>
-        </div>
-      </div>
-      <div class="list <%= if !@show_new_list, do: 'list-new' %>">
-        <div class="inner">
-        <%= if @show_new_list do %>
-          <form phx-submit="save_new_list" class="list-new-form">
-            <%=
-              text_input :list, :name,
-              class: "list-name",
-              required: true,
-              placeholder: "Add new list..."
-            %>
-            <div class="list-new-cta">
-              <button type="submit">Save list</button>
-              <span>or</span>
-              <a phx-click="new_list_toggle">cancel</a>
-            </div>
-          </form>
+      <% end %>
+      <div class="list <%= if @show_new_board, do: "list-new", else: "list-new-disable" %>">
+        <%= if @show_new_board do %>
+          <div class="inner">
+            <h5>New Board</h5>
+            <form phx-submit="save_new_board" class="list-new-form">
+              <%=
+                text_input :board, :name,
+                class: "list-name",
+                required: true,
+                placeholder: "Board name"
+              %>
+              <div class="list-new-cta">
+                <button type="submit">Create Board</button>
+                <span>or</span>
+                <a phx-click="new_board_toggle">cancel</a>
+              </div>
+            </form>
+          </div>
         <% else %>
-          <div phx-click="new_list_toggle" class="list-item">Add new list...</div>
+          <div phx-click="new_board_toggle" class="inner">
+            <div class="list-item">Add new board...</div>
+          </div>
         <% end %>
-        </div>
       </div>
+    </div>
+  </div>
+  <div class="view-container boards show">
+    <header class="view-header">
+      <div class="board-title">
+        <i class="fa fa-user"></i>
+        <h3 class="board-name">Other board</h3>
+      </div>
+    </header>
+    <div class="lists-wrapper board-list">
+      <%= for owned_boards_item <- @invited_boards do %>
+        <div class="list">
+          <div class="inner">
+            <header>
+              <h4 class="title"><%= owned_boards_item.name %></h4>
+            </header>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

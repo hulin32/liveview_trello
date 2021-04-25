@@ -5,7 +5,7 @@ defmodule LiveviewTrello.UserBoard do
   alias LiveviewTrello.Accounts.User
   alias LiveviewTrello.Board
 
-  schema "user_board" do
+  schema "user_boards" do
     belongs_to :board, Board
     belongs_to :user, User
 

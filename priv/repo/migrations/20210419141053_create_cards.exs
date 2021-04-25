@@ -6,7 +6,7 @@ defmodule LiveviewTrello.Repo.Migrations.CreateCards do
       add :name, :string
       add :list_id, references(:lists, on_delete: :delete_all), null: false
       add :desc, :string
-      add :order, :integer
+      add :position, :integer, default: 0
       add :tags, :string
 
       timestamps()

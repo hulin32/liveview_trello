@@ -1,6 +1,8 @@
 defmodule LiveviewTrelloWeb.Home do
   use LiveviewTrelloWeb, :live_view
+  import Ecto
   alias LiveviewTrello.Accounts.Guardian
+  alias LiveviewTrello.{Repo, Board, UserBoard, Card}
 
   @impl true
   def mount(_params, %{ "guardian_default_token" => token }, socket) do
@@ -11,93 +13,65 @@ defmodule LiveviewTrelloWeb.Home do
         |> assign(:current_user, user)
       _ -> socket
     end
+
     {:ok,
       socket
-      |> assign(show_new_list: false)
-      |> assign(show_new_card: %{})
-      |> assign(show_new_memeber: false)
-      |> assign(show_card_modal: false)
+      |> load_boards()
+      |> reset_all_toggle()
     }
   end
 
   @impl true
-  def handle_event("new_list_toggle", _, socket) do
-    show_new_list = !socket.assigns.show_new_list
+  def handle_event("new_board_toggle", _, socket) do
+    show_new_board = !socket.assigns.show_new_board
     {:noreply,
       socket
-      |> reset_all_toggle
-      |> assign(show_new_list: show_new_list)
+      |> reset_all_toggle()
+      |> assign(show_new_board: show_new_board)
     }
   end
 
   @impl true
-  def handle_event("save_new_list", params, socket) do
-    # %{"list" => %{"name" => "sassasas"}}
-    IO.inspect params
-    {:noreply,
-      socket
-      |> reset_all_toggle
-    }
-  end
+  def handle_event("save_new_board", %{"board" => board_params}, socket) do
+    changeset = socket.assigns.current_user
+      |> build_assoc(:owned_boards)
+      |> Board.changeset(board_params)
 
-  @impl true
-  def handle_event("new_card_toggle", %{ "card_id" => card_id }, socket) do
-    show_new_card_map =
-    case Map.fetch(socket.assigns.show_new_card, card_id) do
-      {:ok, show_new_card} -> %{ card_id => !show_new_card }
-      _ -> %{ card_id => true }
+    if changeset.valid? do
+      board = Repo.insert!(changeset)
+      board
+      |> build_assoc(:user_boards)
+      |> UserBoard.changeset(%{user_id: socket.assigns.current_user.id})
+      |> Repo.insert!
     end
+
     {:noreply,
       socket
-      |> reset_all_toggle
-      |> assign(show_new_card: show_new_card_map)
+      |> load_boards()
+      |> reset_all_toggle()
     }
   end
 
-  @impl true
-  def handle_event("save_new_card", params, socket) do
-    # %{"card" => %{"name" => "sasasa"}, "list" => %{"id" => "2"}}
-    IO.inspect params
-    {:noreply,
-      socket
-      |> reset_all_toggle
-    }
-  end
+  defp load_boards(socket) do
+    owned_boards = socket.assigns.current_user
+      |> assoc(:owned_boards)
+      |> Board.preload_all
+      |> Repo.all
 
-  @impl true
-  def handle_event("new_member_toggle", _, socket) do
-    show_new_memeber = !socket.assigns.show_new_memeber
-    {:noreply,
-      socket
-      |> reset_all_toggle
-      |> assign(show_new_memeber: show_new_memeber)
-    }
-  end
+    invited_boards = socket.assigns.current_user
+      |> assoc(:boards)
+      |> Board.not_owned_by(socket.assigns.current_user.id)
+      |> Board.preload_all
+      |> Repo.all
 
-  @impl true
-  def handle_event("save_new_member", params, socket) do
-    # %{"member" => %{"email" => "sasa@182.com"}}
-    IO.inspect params
-    {:noreply,
-      socket
-      |> reset_all_toggle
-    }
-  end
-
-  @impl true
-  def handle_event("card_modal_toggle", _params, socket) do
-    IO.inspect "sasasas"
-    show_card_modal = !socket.assigns.show_card_modal
-    {:noreply,
-      socket
-      |> reset_all_toggle
-      |> assign(show_card_modal: show_card_modal)
-    }
+    socket
+    |> assign(owned_boards: owned_boards)
+    |> assign(invited_boards: invited_boards)
   end
 
   defp reset_all_toggle(socket) do
     socket
-    |> assign(show_new_list: false)
+    |> assign(show_new_board: false)
     |> assign(show_new_card: %{})
     |> assign(show_new_memeber: false)
     |> assign(show_card_modal: false)

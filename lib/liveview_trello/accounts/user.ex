@@ -14,8 +14,8 @@ defmodule LiveviewTrello.Accounts.User do
     field :last_name, :string
 
     has_many :owned_boards, Board
-    has_many :user_board, UserBoard
-    has_many :boards, through: [:user_board, :board]
+    has_many :user_boards, UserBoard
+    has_many :boards, through: [:user_boards, :board]
 
     timestamps()
   end

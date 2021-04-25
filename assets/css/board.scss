@@ -1,0 +1,54 @@
+#board {
+  .board-title {
+    display: flex;
+    .fa-user {
+      color: white;
+      margin-right: 0.5rem;
+    }
+  }
+  .list {
+    height: 50px;
+    &.list-new-disable {
+      height: initial;
+      min-height: 50px;
+      .inner {
+        padding: 1rem;
+        border-radius: $small-border-radius;
+        background-color: rgba(black, 0.1);
+        &:hover {
+          background-color: rgba(black, 0.2);
+        }
+      }
+    }
+    .inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    &.list-new {
+      height: initial;
+      min-height: 50px;
+      .inner {
+        background-color: tint($gray, 50%);
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      h5 {
+        font-size: 2rem;
+        color: shade($gray, 80%);
+        margin-bottom: 10px;
+      }
+      .list-new-form {
+        width: 100%;
+      }
+      button {
+        width: 16rem;
+      }
+    }
+  }
+  .title {
+    margin: 0;
+    font-size: 1.8rem;
+  }
+}
+
