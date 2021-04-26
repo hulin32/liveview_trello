@@ -13,10 +13,9 @@ defmodule LiveviewTrelloWeb.Board do
       |> Enum.at(0)
       |> Integer.parse()
 
-    current_board = Board
-      |> where(id: ^board_id)
-      |> Board.preload_board_all
-      |> Repo.one()
+    socket = socket |> assign(:board_id, board_id)
+
+    socket = load_current_board(socket)
 
     socket =
       case Guardian.resource_from_token(token) do
@@ -25,6 +24,8 @@ defmodule LiveviewTrelloWeb.Board do
           |> assign(:current_user, user)
         _ -> socket
       end
+
+    current_board = socket.assigns.current_board;
     if current_board === nil or socket.assigns.current_user.id !== current_board.user.id do
       {:ok,
         socket
@@ -37,7 +38,6 @@ defmodule LiveviewTrelloWeb.Board do
         socket
         |> reset_all_toggle()
         |> load_boards()
-        |> assign(:current_board, current_board)
       }
     end
   end
@@ -62,26 +62,22 @@ defmodule LiveviewTrelloWeb.Board do
       Repo.insert!(changeset)
     end
 
-    current_board = Board
-      |> where(id: ^socket.assigns.current_board.id)
-      |> Board.preload_board_all
-      |> Repo.one()
-
     {:noreply,
       socket
       |> reset_all_toggle()
       |> load_boards()
-      |> assign(:current_board, current_board)
+      |> load_current_board()
     }
   end
 
   @impl true
-  def handle_event("new_card_toggle", %{ "card_id" => card_id }, socket) do
+  def handle_event("new_card_toggle", %{ "list_id" => list_id }, socket) do
     show_new_card_map =
-    case Map.fetch(socket.assigns.show_new_card, card_id) do
-      {:ok, show_new_card} -> %{ card_id => !show_new_card }
-      _ -> %{ card_id => true }
-    end
+      case Map.fetch(socket.assigns.show_new_card, list_id) do
+        {:ok, show_new_card} -> %{ list_id => !show_new_card }
+        _ -> %{ list_id => true }
+      end
+
     {:noreply,
       socket
       |> reset_all_toggle
@@ -90,11 +86,23 @@ defmodule LiveviewTrelloWeb.Board do
   end
 
   @impl true
-  def handle_event("save_new_card", params, socket) do
-    # %{"card" => %{"name" => "sasasa"}, "list" => %{"id" => "2"}}
+  def handle_event("save_new_card", %{"card" => params, "list" => %{"id" => list_id}}, socket) do
+    list = LiveviewTrello.List
+      |> where(id: ^list_id)
+      |> Repo.one()
+
+    changeset = list
+      |> build_assoc(:cards)
+      |> LiveviewTrello.Card.changeset(params)
+    if changeset.valid? do
+      Repo.insert!(changeset)
+    end
+
     {:noreply,
       socket
-      |> reset_all_toggle
+      |> reset_all_toggle()
+      |> load_boards()
+      |> load_current_board()
     }
   end
 
@@ -120,7 +128,6 @@ defmodule LiveviewTrelloWeb.Board do
 
   @impl true
   def handle_event("card_modal_toggle", _params, socket) do
-    IO.inspect "sasasas"
     show_card_modal = !socket.assigns.show_card_modal
     {:noreply,
       socket
@@ -151,5 +158,15 @@ defmodule LiveviewTrelloWeb.Board do
     |> assign(show_new_card: %{})
     |> assign(show_new_memeber: false)
     |> assign(show_card_modal: false)
+    |> assign(current_card: %{})
+  end
+
+  def load_current_board(socket) do
+    current_board = Board
+      |> where(id: ^socket.assigns.board_id)
+      |> Board.preload_board_all
+      |> Repo.one()
+    socket
+      |> assign(:current_board, current_board)
   end
 end

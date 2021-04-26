@@ -22,6 +22,11 @@ defmodule LiveviewTrello.Card do
   def changeset(card, attrs) do
     card
     |> cast(attrs, [:name, :list_id, :desc, :position, :tags])
-    |> validate_required([:name, :list_id, :desc, :position, :tags])
+    |> validate_required([:name, :list_id])
+    |> put_position()
+  end
+
+  defp put_position(changeset) do
+    put_change(changeset, :position, 1)
   end
 end

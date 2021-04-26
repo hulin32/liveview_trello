@@ -11,7 +11,8 @@
   <%=
     live_component @socket,
     LiveviewTrelloWeb.CardModalComponent,
-    id: :card_modal
+    id: :card_modal,
+    current_card: @current_card
   %>
 <% end %>
 
@@ -63,28 +64,33 @@
               <h4 class="title"><%= list.name %></h4>
             </header>
             <section>
-              <div phx-click="card_modal_toggle" phx-value-card_id="1"  class="card">
-                <div class="tags">
-                  <span class="tag green"></span>
-                  <span class="tag yellow"></span>
-                  <span class="tag orange"></span>
-                  <i class="fas fa-pencil-alt"></i>
+              <%= for card <- list.cards do %>
+                <div phx-click="card_modal_toggle" phx-value-card_id="<%= card.id %>"  class="card">
+                  <%# <div class="tags">
+                    <span class="tag green"></span>
+                    <span class="tag yellow"></span>
+                    <span class="tag orange"></span>
+                    <i class="fas fa-pencil-alt"></i>
+                  </div> %>
+                  <p>
+                    <%= card.name %>
+                  </p>
+                  <%= if length(card.comments) > 0 do %>
+                    <div class="comment">
+                      <i class="fa fa-comment"></i>
+                      <%= length(card.comments) %>
+                    </div>
+                  <% end %>
                 </div>
-                <p>
-                  sa s aas as asa sasa ss asa s sasa sa
-                </p>
-                <div class="comment">
-                  <i class="fa fa-comment"></i>
-                  2
-                </div>
-              </div>
+              <% end %>
             </section>
             <footer>
-              <%= if Map.get(@show_new_card, "1") do %>
+              <%= if Map.get(@show_new_card, Integer.to_string(list.id)) do %>
                 <form phx-submit="save_new_card" class="card-new-form">
                   <%=
                     textarea :card, :name,
                     class: "card-name",
+                    placeholder: "New Card Name",
                     required: true
                   %>
                   <%=
@@ -95,11 +101,11 @@
                   <div class="card-new-cta">
                     <button type="submit" >Add</button>
                     <span>or</span>
-                    <a phx-click="new_card_toggle" phx-value-card_id="1">cancel</a>
+                    <a phx-click="new_card_toggle" phx-value-list_id="<%= list.id %>">cancel</a>
                   </div>
                 </form>
               <% else %>
-              <div phx-click="new_card_toggle" phx-value-card_id="1" class="add-new">Add a new card...</div>
+              <div phx-click="new_card_toggle" phx-value-list_id="<%= list.id %>" class="add-new">Add a new card...</div>
               <% end %>
             </footer>
           </div>
