@@ -1,86 +1,88 @@
 <div phx-click="card_modal_toggle" phx-target="#home" class="card-modal-bg">
   <div class="card-modal">
-    <div phx-hook="ClickCapture" id="ClickCapture" class="card-content">
-      <a phx-click="card_modal_toggle" class="close" phx-target="#home">
+    <div class="card-content">
+      <div phx-click="card_modal_toggle" phx-target="#home" class="close">
         <i class="fa fa-times"></i>
-      </a>
-      <div class="info">
-        <section class="summary">
-          <h3>sasa</h3>
-          <div class="items-wrapper">
-            <div class="card-tags">
-              <h5>Tags</h5>
-              <div class="tag orange"></div>
-              <div class="tag red"></div>
-              <div class="tag purple"></div>
-            </div>
-          </div>
-          <h5>Description</h5>
-          <p>sasass</p>
-          <a class="edit" href="#">Edit</a>
-        </section>
-
-        <div class="comment-form-wrapper">
-          <form>
-            <h4>Add comment</h4>
-            <div class="comment-form-inner">
-              <div class="avatar-wrapper">
-                <span>HH</span>
-              </div>
-              <div class="comment-area">
-                <textarea
-                  rows="8"
-                  placeholder="Write a comment..."
-                  required="true"
-                ></textarea
-                >
-                <button type="submit">
-                  Save comment
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="comments-wrapper">
-          <h4 >Activity</h4>
-          <div class="comment">
-            <div
-              class="avatar-wrapper"
-            >
-              <span>HL</span>
-            </div>
-            <div class="info-wrapper">
-              <p class="text">
-                test
-              </p>
-              <small>20 days ago</small>
-            </div>
-          </div>
-          <div class="comment">
-            <div
-              class="avatar-wrapper"
-            >
-              <span>SS</span>
-            </div>
-            <div class="info-wrapper">
-              <p class="text">
-                sasas
-              </p>
-              <small>20 days ago</small>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="options">
-        <h3>Add</h3>
-        <a class="button" href="#">
-          <i class="fa fa-user"></i>
-          <span>Members</span>
-        </a>
-        <a class="button" href="#">
-          <i class="fa fa-tag"></i>
-          <span>Tags</span>
-        </a>
+      <div phx-hook="ClickCapture" id="ClickCapture" class="card-content-inner">
+        <div class="info">
+          <section class="summary">
+            <h3>sasa</h3>
+            <div class="items-wrapper">
+              <div class="card-tags">
+                <h5>Tags</h5>
+                <div class="tag orange"></div>
+                <div class="tag red"></div>
+                <div class="tag purple"></div>
+              </div>
+            </div>
+            <h5>Description</h5>
+            <p>sasass</p>
+            <a class="edit" href="#">Edit</a>
+          </section>
+
+          <div class="comment-form-wrapper">
+            <form>
+              <h4>Add comment</h4>
+              <div class="comment-form-inner">
+                <div class="avatar-wrapper">
+                  <span>HH</span>
+                </div>
+                <div class="comment-area">
+                  <textarea
+                    rows="8"
+                    placeholder="Write a comment..."
+                    required="true"
+                  ></textarea
+                  >
+                  <button type="submit">
+                    Save comment
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="comments-wrapper">
+            <h4 >Activity</h4>
+            <div class="comment">
+              <div
+                class="avatar-wrapper"
+              >
+                <span>HL</span>
+              </div>
+              <div class="info-wrapper">
+                <p class="text">
+                  test
+                </p>
+                <small>20 days ago</small>
+              </div>
+            </div>
+            <div class="comment">
+              <div
+                class="avatar-wrapper"
+              >
+                <span>SS</span>
+              </div>
+              <div class="info-wrapper">
+                <p class="text">
+                  sasas
+                </p>
+                <small>20 days ago</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="options">
+          <h3>Add</h3>
+          <a class="button" href="#">
+            <i class="fa fa-user"></i>
+            <span>Members</span>
+          </a>
+          <a class="button" href="#">
+            <i class="fa fa-tag"></i>
+            <span>Tags</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>

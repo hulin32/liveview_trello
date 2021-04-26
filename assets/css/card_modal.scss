@@ -32,15 +32,15 @@
     margin-left: -350px;
     animation-duration: .3s;
     animation-name: fadeIn;
-    display: flex;
+    .card-content-inner {
+      display: flex;
+    }
   }
   .close {
     color: shade($gray,  20%);
-    padding: 5px;
     cursor: pointer;
-    position: absolute;
-    right: 10px;
-    top: 5px;
+    display: flex;
+    justify-content: flex-end;
     &:hover {
       color: shade($gray,  50%);
     }

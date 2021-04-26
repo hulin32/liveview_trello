@@ -127,12 +127,15 @@ defmodule LiveviewTrelloWeb.Board do
   end
 
   @impl true
-  def handle_event("card_modal_toggle", _params, socket) do
+  def handle_event("card_modal_toggle", params, socket) do
     show_card_modal = !socket.assigns.show_card_modal
+    IO.inspect("show_card_modal")
+    IO.inspect(params)
+    IO.inspect(socket.assigns.show_card_modal)
     {:noreply,
       socket
       |> reset_all_toggle
-      |> assign(show_card_modal: show_card_modal)
+      |> assign(show_card_modal: !socket.assigns.show_card_modal)
     }
   end
 
