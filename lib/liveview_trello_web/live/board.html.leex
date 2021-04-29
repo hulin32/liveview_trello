@@ -65,7 +65,12 @@
             </header>
             <section>
               <%= for card <- list.cards do %>
-                <div phx-click="card_modal_toggle" phx-value-card_id="<%= card.id %>"  class="card">
+                <div
+                  phx-click="card_modal_toggle"
+                  phx-value-card_id="<%= card.id %>"
+                  phx-value-list_id="<%= list.id %>"
+                  class="card"
+                >
                   <%# <div class="tags">
                     <span class="tag green"></span>
                     <span class="tag yellow"></span>

@@ -127,15 +127,32 @@ defmodule LiveviewTrelloWeb.Board do
   end
 
   @impl true
-  def handle_event("card_modal_toggle", params, socket) do
-    show_card_modal = !socket.assigns.show_card_modal
-    IO.inspect("show_card_modal")
-    IO.inspect(params)
-    IO.inspect(socket.assigns.show_card_modal)
+  def handle_event("card_modal_toggle", %{"card_id" => card_id, "list_id" => list_id}, socket) do
     {:noreply,
       socket
-      |> reset_all_toggle
+      |> reset_all_toggle()
       |> assign(show_card_modal: !socket.assigns.show_card_modal)
+      |> load_current_card(list_id, card_id)
+    }
+  end
+
+  @impl true
+  def handle_event("card_modal_toggle", _, socket) do
+    {:noreply,
+      socket
+      |> reset_all_toggle()
+      |> assign(show_card_modal: !socket.assigns.show_card_modal)
+    }
+  end
+
+  @impl true
+  def handle_info({:reload_current_card}, socket) do
+    list_id = socket.assigns.current_card_list_id
+    card_id = socket.assigns.current_card_id
+    {:noreply,
+      socket
+      |> load_current_board()
+      |> load_current_card(list_id, card_id)
     }
   end
 
@@ -171,5 +188,17 @@ defmodule LiveviewTrelloWeb.Board do
       |> Repo.one()
     socket
       |> assign(:current_board, current_board)
+  end
+
+  def load_current_card(socket, list_id, card_id) do
+    current_card =
+      socket.assigns.current_board.lists
+        |> Enum.find(fn list -> list.id === String.to_integer(list_id) end)
+        |> Map.get(:cards)
+        |> Enum.find(fn card -> card.id === String.to_integer(card_id) end)
+    socket
+      |> assign(:current_card, current_card)
+      |> assign(current_card_list_id: list_id)
+      |> assign(current_card_id: card_id)
   end
 end

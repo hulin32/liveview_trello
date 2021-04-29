@@ -7,34 +7,59 @@
       <div phx-hook="ClickCapture" id="ClickCapture" class="card-content-inner">
         <div class="info">
           <section class="summary">
-            <h3>sasa</h3>
-            <div class="items-wrapper">
-              <div class="card-tags">
-                <h5>Tags</h5>
-                <div class="tag orange"></div>
-                <div class="tag red"></div>
-                <div class="tag purple"></div>
+            <%= if @show_card_edit do %>
+              <form phx-submit="update_card" phx-target="<%= @myself %>">
+                <%=
+                  text_input :card, :name,
+                  class: "card-name",
+                  required: true,
+                  placeholder: "Card name",
+                  value: @current_card.name
+                %>
+                <%=
+                  textarea :card, :desc,
+                  class: "card-desc",
+                  required: true,
+                  placeholder: "Card desc",
+                  value: @current_card.desc
+                %>
+                <div class="card-form">
+                  <button phx-disable-with="Save card..." type="submit">Save card</button>
+                  <span>or</span>
+                  <a phx-capture-click="toggle_edit" phx-target="<%= @myself %>" class="edit" href="#">cancel</a>
+                </div>
+              </form>
+            <% else %>
+              <h3><%= @current_card.name %></h3>
+              <div class="items-wrapper">
+                <div class="card-tags">
+                  <h5>Tags</h5>
+                  <div class="tag orange"></div>
+                  <div class="tag red"></div>
+                  <div class="tag purple"></div>
+                </div>
               </div>
-            </div>
-            <h5>Description</h5>
-            <p>sasass</p>
-            <a class="edit" href="#">Edit</a>
+              <h5>Description</h5>
+              <p><%= @current_card.desc %></p>
+              <a phx-capture-click="toggle_edit"  phx-target="<%= @myself %>" class="edit" href="#">Edit</a>
+            <% end %>
           </section>
 
           <div class="comment-form-wrapper">
-            <form>
+            <form phx-submit="add_comment" phx-target="<%= @myself %>">
               <h4>Add comment</h4>
               <div class="comment-form-inner">
                 <div class="avatar-wrapper">
                   <span>HH</span>
                 </div>
                 <div class="comment-area">
-                  <textarea
-                    rows="8"
-                    placeholder="Write a comment..."
-                    required="true"
-                  ></textarea
-                  >
+                  <%=
+                    textarea :card, :comment,
+                    rows: 8,
+                    class: "card-comment",
+                    required: true,
+                    placeholder: "Write a comment..."
+                  %>
                   <button type="submit">
                     Save comment
                   </button>

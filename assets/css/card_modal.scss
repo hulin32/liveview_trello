@@ -9,6 +9,9 @@
   overflow-y: scroll;
   animation-duration: .3s;
   animation-name: fadeIn;
+  .edit {
+    color: $blue;
+  }
   .card-modal {
     pointer-events: none;
     backface-visibility: hidden;
@@ -130,8 +133,12 @@
       margin-bottom: 0.5rem;
     }
   }
+  .card-name, .card-desc  {
+    background-color: white;
+  }
   .options {
     width: 15rem;
+    margin-left: 5rem;
     .button {
       width: 100%;
       display: flex;
