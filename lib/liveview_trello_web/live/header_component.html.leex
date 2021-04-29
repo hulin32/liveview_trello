@@ -10,7 +10,15 @@
               <ul>
                 <%= for owned_boards_item <- @owned_boards_items do %>
                   <li>
-                    <a href="#"><%= owned_boards_item.name %></a>
+                    <%=
+                      live_patch to: Routes.show_path(
+                          @socket,
+                          LiveviewTrelloWeb.Board,
+                          LiveviewTrello.Board.slug_id(owned_boards_item)
+                        )
+                      do %>
+                      <%= owned_boards_item.name %>
+                    <% end %>
                   </li>
                 <% end %>
               </ul>
@@ -20,14 +28,25 @@
               <ul>
                 <%= for invited_boards_item <- @invited_boards_items do %>
                   <li>
-                    <a href="#"><%= invited_boards_item.name %></a>
+                    <%=
+                      live_patch to: Routes.show_path(
+                          @socket,
+                          LiveviewTrelloWeb.Board,
+                          LiveviewTrello.Board.slug_id(invited_boards_item)
+                        )
+                      do %>
+                      <%= invited_boards_item.name %>
+                    <% end %>
                   </li>
                 <% end %>
               </ul>
             <% end %>
             <ul class="options">
               <li>
-                <a to="/" >View all boards</a>
+                <%=
+                  live_patch "View all boards",
+                  to: "/"
+                %>
               </li>
             </ul>
           </div>

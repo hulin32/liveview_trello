@@ -7,13 +7,7 @@ defmodule LiveviewTrelloWeb.Board do
 
   @impl true
   def mount(%{ "id" => id }, %{ "guardian_default_token" => token }, socket) do
-    {board_id, _} =
-      id
-      |> String.split("-")
-      |> Enum.at(0)
-      |> Integer.parse()
-
-    socket = socket |> assign(:board_id, board_id)
+    socket = socket |> assign(:board_id, load_board_id(id))
 
     socket = load_current_board(socket)
 
@@ -40,6 +34,16 @@ defmodule LiveviewTrelloWeb.Board do
         |> load_boards()
       }
     end
+  end
+
+  @impl true
+  def handle_params(%{ "id" => id }, _uri, socket) do
+    {:noreply,
+      socket
+      |> assign(:board_id, load_board_id(id))
+      |> load_current_board()
+      |> reset_all_toggle()
+    }
   end
 
   @impl true
@@ -154,6 +158,15 @@ defmodule LiveviewTrelloWeb.Board do
       |> load_current_board()
       |> load_current_card(list_id, card_id)
     }
+  end
+
+  defp load_board_id(id) do
+    {board_id, _} =
+      id
+      |> String.split("-")
+      |> Enum.at(0)
+      |> Integer.parse()
+    board_id
   end
 
   defp load_boards(socket) do
