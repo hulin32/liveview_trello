@@ -50,11 +50,11 @@
               <h4>Add comment</h4>
               <div class="comment-form-inner">
                 <div class="avatar-wrapper">
-                  <span>HH</span>
+                  <span><%= String.first(@current_user.last_name)<>String.first(@current_user.first_name) %></span>
                 </div>
                 <div class="comment-area">
                   <%=
-                    textarea :card, :comment,
+                    textarea :card, :content,
                     rows: 8,
                     class: "card-comment",
                     required: true,
@@ -69,32 +69,21 @@
           </div>
           <div class="comments-wrapper">
             <h4 >Activity</h4>
-            <div class="comment">
-              <div
-                class="avatar-wrapper"
-              >
-                <span>HL</span>
+            <%= for comment <- @current_card.comments do %>
+              <div class="comment">
+                <div
+                  class="avatar-wrapper"
+                >
+                  <span><%= String.first(comment.user.last_name)<>String.first(comment.user.first_name) %></span>
+                </div>
+                <div class="info-wrapper">
+                  <p class="text">
+                    <%= comment.content %>
+                  </p>
+                  <small><%= comment.inserted_at %> </small>
+                </div>
               </div>
-              <div class="info-wrapper">
-                <p class="text">
-                  test
-                </p>
-                <small>20 days ago</small>
-              </div>
-            </div>
-            <div class="comment">
-              <div
-                class="avatar-wrapper"
-              >
-                <span>SS</span>
-              </div>
-              <div class="info-wrapper">
-                <p class="text">
-                  sasas
-                </p>
-                <small>20 days ago</small>
-              </div>
-            </div>
+            <% end %>
           </div>
         </div>
         <div class="options">
