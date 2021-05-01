@@ -19,7 +19,8 @@ defmodule LiveviewTrelloWeb.Board do
         _ -> socket
       end
 
-    current_board = socket.assigns.current_board;
+    current_board = socket.assigns.current_board
+
     if current_board === nil or socket.assigns.current_user.id !== current_board.user.id do
       {:ok,
         socket

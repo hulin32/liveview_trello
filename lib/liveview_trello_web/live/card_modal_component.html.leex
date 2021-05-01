@@ -51,7 +51,7 @@
               <h4>Add comment</h4>
               <div class="comment-form-inner">
                 <div class="avatar-wrapper">
-                  <span><%= String.first(@current_user.last_name)<>String.first(@current_user.first_name) %></span>
+                  <span><%= user_name(@current_user) %></span>
                 </div>
                 <div class="comment-area">
                   <%=
@@ -75,7 +75,7 @@
                 <div
                   class="avatar-wrapper"
                 >
-                  <span><%= String.first(comment.user.last_name)<>String.first(comment.user.first_name) %></span>
+                  <span><%= user_name(@current_user) %></span>
                 </div>
                 <div class="info-wrapper">
                   <p class="text">

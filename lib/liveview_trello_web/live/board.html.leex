@@ -22,12 +22,11 @@
     <header class="view-header">
       <h3 class="board-name">hulin</h3>
       <ul class="board-users">
-        <li class="name connected">
-          LH
-        </li>
-        <li class="name">
-          UJ
-        </li>
+        <%= for member <- @current_board.members do %>
+          <li class="name connected">
+            <%= user_name(member) %>
+          </li>
+        <% end %>
         <li class="name icon member-cta">
           <a phx-click="new_member_toggle" class="add-new" href="#" ><i class="fa fa-plus" ></i></a>
           <%= if @show_new_memeber do %>

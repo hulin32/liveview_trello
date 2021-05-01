@@ -20,4 +20,8 @@ defmodule LiveviewTrelloWeb.LiveHelpers do
     modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
     live_component(socket, LiveviewTrelloWeb.ModalComponent, modal_opts)
   end
+
+  def user_name(user) do
+    String.first(user.last_name)<>String.first(user.first_name)
+  end
 end

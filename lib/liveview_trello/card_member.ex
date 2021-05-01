@@ -2,10 +2,10 @@ defmodule LiveviewTrello.CardMember do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "card_member" do
+  schema "card_members" do
     belongs_to :card, LiveviewTrello.Card
-    belongs_to :user, LiveviewTrello.Accounts.User
-
+    belongs_to :user_boards, LiveviewTrello.UserBoard
+    has_one :user, through: [:user_boards, :user]
     timestamps()
   end
 
