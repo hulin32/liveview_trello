@@ -1,10 +1,11 @@
-<div phx-click="card_modal_toggle" phx-target="#home" class="card-modal-bg">
+<div class="card-modal-wrapper">
+  <div class="bg" phx-click="card_modal_toggle" phx-target="#home" ></div>
   <div class="card-modal">
     <div class="card-content">
       <div phx-click="card_modal_toggle" phx-target="#home" class="close">
         <i class="fa fa-times"></i>
       </div>
-      <div phx-hook="ClickCapture" id="ClickCapture" class="card-content-inner">
+      <div class="card-content-inner">
         <div class="info">
           <section class="summary">
             <%= if @show_card_edit do %>
@@ -26,7 +27,7 @@
                 <div class="card-form">
                   <button phx-disable-with="Save card..." type="submit">Save card</button>
                   <span>or</span>
-                  <a phx-capture-click="toggle_edit" phx-target="<%= @myself %>" class="edit" href="#">cancel</a>
+                  <a phx-click="toggle_edit" phx-target="<%= @myself %>" class="edit" href="#">cancel</a>
                 </div>
               </form>
             <% else %>
@@ -41,7 +42,7 @@
               </div>
               <h5>Description</h5>
               <p><%= @current_card.desc %></p>
-              <a phx-capture-click="toggle_edit"  phx-target="<%= @myself %>" class="edit" href="#">Edit</a>
+              <a phx-click="toggle_edit"  phx-target="<%= @myself %>" class="edit" href="#">Edit</a>
             <% end %>
           </section>
 

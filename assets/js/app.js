@@ -21,7 +21,7 @@ let Hooks = {}
 Hooks.ClickCapture = {
   mounted() {
     this.el.addEventListener("click", event => {
-      event.stopPropagation();
+      event.preventDefault();
     })
   }
 }
