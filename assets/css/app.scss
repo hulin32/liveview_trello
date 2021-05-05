@@ -117,6 +117,10 @@ body {
   margin: 0;
 }
 
+.error-wrapper {
+  margin: auto;
+  padding: 40px 0;
+}
 .error {
   color: $error;
 }

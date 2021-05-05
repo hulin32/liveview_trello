@@ -7,10 +7,6 @@ defmodule LiveviewTrelloWeb.Board do
 
   @impl true
   def mount(%{ "id" => id }, %{ "guardian_default_token" => token }, socket) do
-    socket = socket |> assign(:board_id, load_board_id(id))
-
-    socket = load_current_board(socket)
-
     socket =
       case Guardian.resource_from_token(token) do
         {:ok, user, _claims} ->
@@ -19,32 +15,38 @@ defmodule LiveviewTrelloWeb.Board do
         _ -> socket
       end
 
-    current_board = socket.assigns.current_board
-
-    if current_board === nil or socket.assigns.current_user.id !== current_board.user.id do
-      {:ok,
-        socket
-          |> reset_all_toggle()
-          |> load_boards()
-          |> assign(:error, "No related board found")
-      }
-    else
-      {:ok,
-        socket
+    board_id = load_board_id(id)
+    {:ok,
+      socket
         |> reset_all_toggle()
         |> load_boards()
-      }
-    end
+        |> assign(:board_id, board_id)
+    }
   end
 
   @impl true
   def handle_params(%{ "id" => id }, _uri, socket) do
-    {:noreply,
-      socket
-      |> assign(:board_id, load_board_id(id))
-      |> load_current_board()
-      |> reset_all_toggle()
-    }
+    board_id = load_board_id(id)
+    user_board =  LiveviewTrello.UserBoard
+        |> where(user_id: ^socket.assigns.current_user.id)
+        |> where(board_id: ^board_id)
+        |> Repo.one()
+    case user_board do
+      %LiveviewTrello.UserBoard{} ->
+        IO.inspect("reset_all_toggle1")
+        {:noreply,
+          socket
+          |> reset_all_toggle()
+          |> load_current_board()
+        }
+      _ ->
+        IO.inspect("reset_all_toggle2")
+        {:noreply,
+          socket
+            |> reset_all_toggle()
+            |> assign(:error, "No related board found")
+        }
+    end
   end
 
   @impl true
@@ -201,6 +203,7 @@ defmodule LiveviewTrelloWeb.Board do
   end
 
   defp reset_all_toggle(socket) do
+    IO.inspect("reset_all_toggle")
     socket
     |> assign(error: "")
     |> assign(new_member_error: "")
