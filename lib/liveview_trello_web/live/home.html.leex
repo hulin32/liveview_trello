@@ -73,13 +73,19 @@
       </div>
     </header>
     <div class="lists-wrapper board-list">
-      <%= for owned_boards_item <- @invited_boards do %>
+      <%= for invited_board_item <- @invited_boards do %>
         <div class="list">
-          <div class="inner">
+          <%=
+            live_patch to: Routes.show_path(
+                @socket,
+                LiveviewTrelloWeb.Board,
+                LiveviewTrello.Board.slug_id(invited_board_item)
+              ),
+            class: "inner" do %>
             <header>
-              <h4 class="title"><%= owned_boards_item.name %></h4>
+              <h5 class="title"><%= invited_board_item.name %></h5>
             </header>
-          </div>
+          <% end %>
         </div>
       <% end %>
     </div>
