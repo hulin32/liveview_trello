@@ -1,8 +1,10 @@
 defmodule LiveviewTrelloWeb.UserSocket do
   use Phoenix.Socket
 
+  alias Guardian.Phoenix.Socket
+
   ## Channels
-  # channel "room:*", LiveviewTrelloWeb.RoomChannel
+  channel "boards:*", LiveviewTrelloWeb.BoardChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -16,8 +18,12 @@ defmodule LiveviewTrelloWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case Socket.authenticate(socket, LiveviewTrello.Accounts.Guardian, token) do
+      {:ok, authed_socket} ->
+        {:ok, assign(socket, :current_user, Socket.current_resource(authed_socket))}
+      {:error, _} -> :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
@@ -31,5 +37,7 @@ defmodule LiveviewTrelloWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(_socket), do: nil
+  def id(socket) do
+    "users_socket:#{socket.assigns.current_user.id}"
+  end
 end

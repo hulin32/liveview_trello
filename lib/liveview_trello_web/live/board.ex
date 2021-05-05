@@ -2,8 +2,8 @@ defmodule LiveviewTrelloWeb.Board do
   use LiveviewTrelloWeb, :live_view
   import Ecto
   import Ecto.Query
-  alias LiveviewTrello.Accounts.Guardian
-  alias LiveviewTrello.{Repo, Board, UserBoard, Card}
+  alias LiveviewTrello.Accounts.{Guardian, User}
+  alias LiveviewTrello.{Repo, Board, UserBoard}
 
   @impl true
   def mount(%{ "id" => id }, %{ "guardian_default_token" => token }, socket) do
@@ -122,13 +122,28 @@ defmodule LiveviewTrelloWeb.Board do
   end
 
   @impl true
-  def handle_event("save_new_member", params, socket) do
+  def handle_event("save_new_member", %{"member" => %{"email" => email}}, socket) do
     # %{"member" => %{"email" => "sasa@182.com"}}
-    IO.inspect params
-    {:noreply,
-      socket
-      |> reset_all_toggle
-    }
+    board = socket.assigns.current_board
+    try do
+      User
+        |> Repo.get_by!(email: email)
+        |> build_assoc(:user_boards)
+        |> UserBoard.changeset(%{board_id: board.id})
+        |> Repo.insert!()
+      {:noreply,
+        socket
+        |> reset_all_toggle()
+      }
+    catch
+      _, _ ->
+      {:noreply,
+        socket
+        |> reset_all_toggle()
+        |> assign(show_new_memeber: true)
+        |> assign(new_member_error: "Email not right, please check and try again")
+      }
+    end
   end
 
   @impl true
@@ -188,6 +203,7 @@ defmodule LiveviewTrelloWeb.Board do
   defp reset_all_toggle(socket) do
     socket
     |> assign(error: "")
+    |> assign(new_member_error: "")
     |> assign(show_new_list: false)
     |> assign(show_new_card: %{})
     |> assign(show_new_memeber: false)

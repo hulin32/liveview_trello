@@ -23,7 +23,7 @@
       <h3 class="board-name">hulin</h3>
       <ul class="board-users">
         <%= for member <- @current_board.members do %>
-          <li class="name connected">
+          <li alt="<%= member.email %>" class="name connected">
             <%= user_name(member) %>
           </li>
         <% end %>
@@ -40,6 +40,9 @@
                   required: true,
                   placeholder: "Member email"
                 %>
+                <%= if @new_member_error do %>
+                  <div class="error"><%= @new_member_error %></div>
+                <% end %>
                 <div class="member-form">
                   <button phx-disable-with="Add member..." type="submit">Add member</button>
                   <span>or</span>
@@ -53,7 +56,7 @@
     </header>
     <div class="lists-wrapper">
       <%= if @error do %>
-        <div><%= @error %></div>
+        <div class="error"><%= @error %></div>
       <% end %>
     </div>
     <div class="lists-wrapper">
