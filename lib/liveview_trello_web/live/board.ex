@@ -37,6 +37,7 @@ defmodule LiveviewTrelloWeb.Board do
         {:noreply,
           socket
           |> reset_all_toggle()
+          |> assign(:board_id, board_id)
           |> load_current_board()
         }
       _ ->
@@ -44,6 +45,7 @@ defmodule LiveviewTrelloWeb.Board do
         {:noreply,
           socket
             |> reset_all_toggle()
+            |> assign(:board_id, board_id)
             |> assign(:error, "No related board found")
         }
     end
