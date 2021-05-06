@@ -148,17 +148,3 @@
     <% end %>
   </div>
 </div>
-<%= if assigns[:current_board] do %>
-<script>
-import { Socket } from 'phoenix';
-const socket = new Socket('/socket', {
-  params: { token: localStorage.getItem('phoenixAuthToken') },
-  logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data); },
-});
-socket.connect();
-let channel = socket.channel("board:"<> @current_board.id, {});
-channel.join()
-.receive("ok", resp => { console.log("Joined successfully", resp) })
-.receive("error", resp => { console.log("Unable to join", resp) })
-</script>
-<% end %>

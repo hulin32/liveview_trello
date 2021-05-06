@@ -16,11 +16,13 @@ defmodule LiveviewTrelloWeb.Board do
       end
 
     board_id = load_board_id(id)
+    Phoenix.PubSub.subscribe(LiveviewTrello.PubSub, board_topic(board_id))
     {:ok,
       socket
         |> reset_all_toggle()
         |> load_boards()
         |> assign(:board_id, board_id)
+        |> assign(:token, token)
     }
   end
 
@@ -33,7 +35,7 @@ defmodule LiveviewTrelloWeb.Board do
         |> Repo.one()
     case user_board do
       %LiveviewTrello.UserBoard{} ->
-        IO.inspect("reset_all_toggle1")
+        Phoenix.PubSub.broadcast(LiveviewTrello.PubSub, board_topic(board_id), {:new_active_member, socket.assigns.current_user.id})
         {:noreply,
           socket
           |> reset_all_toggle()
@@ -41,7 +43,6 @@ defmodule LiveviewTrelloWeb.Board do
           |> load_current_board()
         }
       _ ->
-        IO.inspect("reset_all_toggle2")
         {:noreply,
           socket
             |> reset_all_toggle()
@@ -180,6 +181,33 @@ defmodule LiveviewTrelloWeb.Board do
     }
   end
 
+  @impl true
+  def handle_info({:new_active_member, user_id}, socket) do
+    # update the list of cards in the socket
+    IO.inspect("user_id:")
+    IO.inspect(user_id)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info({:delete_active_member, user_id}, socket) do
+    # update the list of cards in the socket
+    IO.inspect("user_id:")
+    IO.inspect(user_id)
+    {:noreply, socket}
+  end
+
+  @impl true
+  def terminate(_, socket) do
+    Phoenix.PubSub.broadcast(LiveviewTrello.PubSub, board_topic(socket.assigns.board_id), {:delete_active_member, socket.assigns.current_user.id})
+    {:noreply, socket}
+  end
+
+  defp board_topic(board_id) do
+    IO.inspect("board:#{board_id}")
+    "board:#{board_id}"
+  end
+
   defp load_board_id(id) do
     {board_id, _} =
       id
@@ -214,6 +242,7 @@ defmodule LiveviewTrelloWeb.Board do
     |> assign(show_new_memeber: false)
     |> assign(show_card_modal: false)
     |> assign(current_card: %{})
+    |> assign(active_members: [])
   end
 
   def load_current_board(socket) do

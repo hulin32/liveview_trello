@@ -2,7 +2,7 @@ defmodule LiveviewTrelloWeb.BoardChannel do
   use LiveviewTrelloWeb, :channel
 
   @impl true
-  def join("board:"<>board_id, _payload, socket) do
+  def join("boards:"<>board_id, _payload, socket) do
     {:ok, socket}
   end
 
