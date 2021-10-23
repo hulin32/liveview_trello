@@ -2,7 +2,7 @@
   <nav id="boards_nav">
     <ul>
       <li>
-        <a phx-click="toggle_board"  href="#" phx-target="<%= @myself %>"><i class="fa fa-columns"></i>Boards</a>
+        <a phx-click="toggle_board"  href="#" phx-target={@myself}><i class="fa fa-columns"></i>Boards</a>
         <%= if @toggle_board do %>
           <div class="dropdown">
             <%= if length(@owned_boards_items) > 0 do %>

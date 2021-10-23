@@ -9,7 +9,7 @@
         <div class="info">
           <section class="summary">
             <%= if @show_card_edit do %>
-              <form phx-submit="update_card" phx-target="<%= @myself %>">
+              <form phx-submit="update_card" phx-target={@myself}>
                 <%=
                   text_input :card, :name,
                   class: "card-name",
@@ -27,7 +27,7 @@
                 <div class="card-form">
                   <button phx-disable-with="Save card..." type="submit">Save card</button>
                   <span>or</span>
-                  <a phx-click="toggle_edit" phx-target="<%= @myself %>" class="edit" href="#">cancel</a>
+                  <a phx-click="toggle_edit" phx-target={@myself} class="edit" href="#">cancel</a>
                 </div>
               </form>
             <% else %>
@@ -42,12 +42,12 @@
               </div>
               <h5>Description</h5>
               <p><%= @current_card.desc %></p>
-              <a phx-click="toggle_edit"  phx-target="<%= @myself %>" class="edit" href="#">Edit</a>
+              <a phx-click="toggle_edit"  phx-target={@myself} class="edit" href="#">Edit</a>
             <% end %>
           </section>
 
           <div class="comment-form-wrapper">
-            <form phx-submit="add_comment" phx-target="<%= @myself %>">
+            <form phx-submit="add_comment" phx-target={@myself}>
               <h4>Add comment</h4>
               <div class="comment-form-inner">
                 <div class="avatar-wrapper">

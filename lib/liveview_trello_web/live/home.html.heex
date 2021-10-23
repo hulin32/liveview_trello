@@ -39,7 +39,7 @@
           <% end %>
         </div>
       <% end %>
-      <div class="list <%= if @show_new_board, do: "list-new", else: "list-new-disable" %>">
+      <div class={"list #{if @show_new_board, do: "list-new", else: "list-new-disable"}"}>
         <%= if @show_new_board do %>
           <div class="inner">
             <h5>New Board</h5>
