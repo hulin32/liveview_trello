@@ -1,20 +1,18 @@
-<%=
-  live_component @socket,
-  LiveviewTrelloWeb.HeaderComponent,
-  id: :header,
-  current_user: @current_user,
-  owned_boards_items:  @owned_boards,
-  invited_boards_items:  @invited_boards
-%>
+<.live_component
+  module={LiveviewTrelloWeb.HeaderComponent}
+  id={:header}
+  current_user={@current_user}
+  owned_boards_items={@owned_boards}
+  invited_boards_items={@invited_boards}
+/>
 
 <%= if @show_card_modal do %>
-  <%=
-    live_component @socket,
-    LiveviewTrelloWeb.CardModalComponent,
-    id: :card_modal,
-    current_card: @current_card,
-    current_user: @current_user
-  %>
+  <.live_component
+    module={LiveviewTrelloWeb.CardModalComponent}
+    id={:card_modal}
+    current_card={@current_card}
+    current_user={@current_user}
+  />
 <% end %>
 
 <div class="main-container" id="home">

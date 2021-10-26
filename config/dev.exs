@@ -26,6 +26,7 @@ config :liveview_trello, LiveviewTrelloWeb.Endpoint,
       "--mode",
       "development",
       "--watch",
+      "--color",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]

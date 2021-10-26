@@ -50,7 +50,7 @@ $small-border-radius: 3px;
 }
 
 @each $key, $color in $tags-colors {
-  .tag.#{$key} {
+  .tag.#{"" + $key} {
     background: $color;
     &:hover, &.selected {
       background: shade($color, 20%);
