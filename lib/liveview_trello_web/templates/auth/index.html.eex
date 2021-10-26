@@ -1,7 +1,7 @@
 <div class='view-container sessions new'>
     <main>
         <header class='logo-wrapper'>
-          <img class="logo" src="/images/phoenix.png" alt="Phoenix Framework Logo"/>
+          <img class="logo" src="/images/logo.png" alt="Phoenix Framework Logo"/>
         </header>
         <%= form_for @changeset, Routes.auth_path(@conn, :login), fn f -> %>
 
