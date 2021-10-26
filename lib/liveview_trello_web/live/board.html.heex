@@ -24,7 +24,7 @@
         <h3 class="board-name"><%= @current_board.name %> </h3>
         <ul class="board-users">
           <%= for member <- @current_board.members do %>
-            <li alt={@member.email} class="name connected">
+            <li alt={member.email} class="name connected">
               <%= user_name(member) %>
             </li>
           <% end %>
@@ -74,8 +74,8 @@
                 <%= for card <- list.cards do %>
                   <div
                     phx-click="card_modal_toggle"
-                    phx-value-card_id={@card.id}
-                    phx-value-list_id={@list.id}
+                    phx-value-card_id={card.id}
+                    phx-value-list_id={list.id}
                     class="card"
                   >
                     <%# <div class="tags">
@@ -113,11 +113,11 @@
                     <div class="card-new-cta">
                       <button type="submit" >Add</button>
                       <span>or</span>
-                      <a phx-click="new_card_toggle" phx-value-list_id={@list.id}>cancel</a>
+                      <a phx-click="new_card_toggle" phx-value-list_id={list.id}>cancel</a>
                     </div>
                   </form>
                 <% else %>
-                <div phx-click="new_card_toggle" phx-value-list_id={@list.id} class="add-new">Add a new card...</div>
+                <div phx-click="new_card_toggle" phx-value-list_id={list.id} class="add-new">Add a new card...</div>
                 <% end %>
               </footer>
             </div>

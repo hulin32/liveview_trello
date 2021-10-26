@@ -23,6 +23,7 @@ defmodule LiveviewTrelloWeb.Home do
 
   @impl true
   def handle_event("new_board_toggle", _, socket) do
+    IO.puts socket.assigns.show_new_board
     show_new_board = !socket.assigns.show_new_board
     {:noreply,
       socket
